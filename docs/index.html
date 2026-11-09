@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RFC 17 · Link expiry lab</title>
+<style>
+:root{color-scheme:light;background:#edf3f3;color:#152b35;font:17px/1.55 system-ui,sans-serif}
+main{max-width:1000px;margin:auto;padding:40px 22px}
+.kicker{font:700 .83rem monospace;letter-spacing:.1em;color:#1a605c}
+h1{font-size:clamp(2.3rem,6vw,4.3rem);line-height:1.02;margin:.35em 0}
+p{max-width:72ch} a{color:#115e67}
+.table{overflow-x:auto;border:1px solid #aac1c0;border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;text-align:left;font-size:.92rem}
+caption{text-align:left;padding:14px;font-weight:700}
+th,td{padding:9px 12px;border-top:1px solid #d8e5e4;white-space:nowrap}
+thead{background:#dbeceb} tbody tr:nth-child(even){background:#f5f9f9}
+</style>
+</head>
+<body><main>
+<p class="kicker">INTERNET RFC SERIES · 017 · GO LAB</p>
+<h1>What expires when a link goes quiet?</h1>
+<p>RFC 17’s reply separated an idle table entry from a blocked entry with a transfer in flight. This educational trace shows how a bounded table behaves when active and idle entries compete for space.</p>
+<div class="table" role="region" aria-label="Link table event trace" tabindex="0">
+<table>
+<caption>2 table slots · 30-second idle expiry</caption>
+<thead><tr><th scope="col">Time (s)</th><th scope="col">Event</th><th scope="col">Outcome</th><th scope="col">Expired</th><th scope="col">Active</th><th scope="col">Idle</th></tr></thead>
+<tbody>
+<tr><th scope="row">0</th><td>begin a</td><td>started: inserted entry</td><td>—</td><td>a</td><td>—</td></tr>
+<tr><th scope="row">1</th><td>begin b</td><td>started: inserted entry</td><td>—</td><td>a, b</td><td>—</td></tr>
+<tr><th scope="row">2</th><td>release b</td><td>released: entry idle</td><td>—</td><td>a</td><td>b</td></tr>
+<tr><th scope="row">32</th><td>begin c</td><td>started: inserted entry</td><td>b</td><td>a, c</td><td>—</td></tr>
+<tr><th scope="row">33</th><td>begin b</td><td>delayed: table full</td><td>—</td><td>a, c</td><td>—</td></tr>
+<tr><th scope="row">40</th><td>release a</td><td>released: entry idle</td><td>—</td><td>c</td><td>a</td></tr>
+<tr><th scope="row">70</th><td>begin b</td><td>started: inserted entry</td><td>a</td><td>b, c</td><td>—</td></tr>
+</tbody></table></div>
+<p>The Go CLI generated this static report. It runs locally with a synthetic event script.</p>
+<p><a href="https://www.rfc-editor.org/info/rfc17/">Read RFC 17 and Kahn’s reply</a> · <a href="https://github.com/Sreenivas-Sadhu-Prabhakara/rfc-0017-link-expiry-lab">Source and run instructions</a></p>
+</main></body></html>

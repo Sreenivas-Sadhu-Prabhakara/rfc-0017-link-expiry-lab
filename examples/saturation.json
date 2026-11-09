@@ -1,0 +1,12 @@
+{
+  "capacity": 2,
+  "events": [
+    {"at_seconds": 0, "action": "begin", "link": "a"},
+    {"at_seconds": 1, "action": "begin", "link": "b"},
+    {"at_seconds": 2, "action": "release", "link": "b"},
+    {"at_seconds": 32, "action": "begin", "link": "c"},
+    {"at_seconds": 33, "action": "begin", "link": "b"},
+    {"at_seconds": 40, "action": "release", "link": "a"},
+    {"at_seconds": 70, "action": "begin", "link": "b"}
+  ]
+}
